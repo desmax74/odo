@@ -16,6 +16,7 @@ def notifyBuild(String buildStatus = 'STARTED') {
 }
 
 node('odo') {
+
             stage('Allocate Node'){
                 env.CICO_API_KEY = readFile("${env.HOME}/duffy.key").trim()
                 duffy_rtn=sh(
@@ -24,8 +25,6 @@ node('odo') {
                     ).trim().tokenize(' ')
                 env.DUFFY_NODE=duffy_rtn[0]
                 env.SSID=duffy_rtn[1]
-                env.BRANCH=params.BRANCH
-                env.REPO=params.REPO
                 env.CLONE_DIR = 'go/src/github.com/redhat-developer/odo'
             }
     
@@ -37,7 +36,7 @@ node('odo') {
                 }
     
                 stage('git clone Tests') {
-                    onmyduffynode '''git clone --single-branch --depth 1 "https://github.com/redhat-developer/odo.git" ${CLONE_DIR} && 
+                    onmyduffynode '''git clone --single-branch --branch cico-test --depth 1 "https://github.com/redhat-developer/odo.git" ${CLONE_DIR} && 
                     cd  ${CLONE_DIR} && ls -la'''
                 }
     
@@ -70,7 +69,7 @@ node('odo') {
                         git branch && 
                         rpm --query centos-release &&
                         echo "----------starting-cluster-provision-----------" &&
-                        ./scripts/minishift-remote.sh &&
+                        ./scripts/minishift-setup.sh &&
                         echo "----------finished-provisioning-cluster-----------" &&
                         odo version &&
                         oc whoami &&
@@ -89,7 +88,7 @@ node('odo') {
                         git checkout cico-test && 
                         rpm --query centos-release &&
                         echo "----------starting-cluster-provision-----------" &&
-                        ./scripts/minishift-remote.sh &&
+                        ./scripts/minishift-setup.sh &&
                         echo "----------finished-provisioning-cluster-----------" &&
                         odo version &&
                         oc whoami &&
@@ -108,7 +107,7 @@ node('odo') {
                         git checkout cico-test && 
                         rpm --query centos-release &&
                         echo "----------starting-cluster-provision-----------" &&
-                        ./scripts/minishift-remote.sh &&
+                        ./scripts/minishift-setup.sh &&
                         echo "----------finished-provisioning-cluster-----------" &&
                         odo version &&
                         oc whoami &&
@@ -127,7 +126,7 @@ node('odo') {
                         git checkout cico-test && 
                         rpm --query centos-release &&
                         echo "----------starting-cluster-provision-----------" &&
-                        ./scripts/minishift-remote.sh service-catalog  &&
+                        ./scripts/minishift-setup.sh service-catalog  &&
                         echo "----------finished-provisioning-cluster-----------" &&
                         odo version &&
                         make test-source-e2e &&
@@ -145,7 +144,7 @@ node('odo') {
                         git checkout cico-test && 
                         rpm --query centos-release &&
                         echo "----------starting-cluster-provision-----------" &&
-                        ./scripts/minishift-remote.sh service-catalog  &&
+                        ./scripts/minishift-setup.sh service-catalog  &&
                         echo "----------finished-provisioning-cluster-----------" &&
                         odo version &&
                         make test-service-e2e &&
@@ -163,7 +162,7 @@ node('odo') {
                         git checkout cico-test && 
                         rpm --query centos-release &&
                         echo "----------starting-cluster-provision-----------" &&
-                        ./scripts/minishift-remote.sh service-catalog  &&
+                        ./scripts/minishift-setup.sh service-catalog  &&
                         echo "----------finished-provisioning-cluster-----------" &&
                         odo version &&
                         make test-service-e2e &&
