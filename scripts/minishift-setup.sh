@@ -35,6 +35,9 @@ sudo tar -xvzf /tmp/minishift.tgz --strip-components=1 -C /usr/local/bin
 ## Get minishift version
 minishift version
 
+minishift status
+minishift delete -f
+
 if [ "$1" = "service-catalog" ]; then
    MINISHIFT_ENABLE_EXPERIMENTAL=y minishift start --vm-driver generic --remote-ipaddress 127.0.0.1 --remote-ssh-user `whoami` --remote-ssh-key ~/.ssh/id_minishift_rsa --extra-clusterup-flags "--enable=*,service-catalog,automation-service-broker,template-service-broker" 
 else
