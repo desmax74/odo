@@ -67,7 +67,7 @@ node('odo') {
                         echo "----------finished-provisioning-cluster-----------"
                         '''
                 }
-
+/*
                 timeout(20) {
                     stage('Main e2e Test') {
                         onmyduffynode '''export PATH=$PATH:/usr/local/go/bin &&
@@ -96,7 +96,7 @@ node('odo') {
                         '''
                     }
                 }
-
+*/
                 timeout(30) {
                     stage('Java e2e tests') {
                         onmyduffynode '''export PATH=$PATH:/usr/local/go/bin &&

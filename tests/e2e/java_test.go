@@ -172,7 +172,7 @@ var _ = Describe("odoJavaE2e", func() {
 			routeURL := determineRouteURL()
 
 			// Ping said URL
-			pingValue := waitForEqualCmd("curl -s "+routeURL+" | grep 'HTTP Booster' | wc -l | tr -d '\n'", "1", 10)
+			pingValue := waitForEqualCmd("curl -s "+routeURL+" | grep 'HTTP Booster' | wc -l | tr -d '\n'", "1", 20)
 			Expect(pingValue).To(Equal(true))
 
 			// Delete the component
